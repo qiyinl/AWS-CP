@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Cloud Practitioner Prep</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo">
+                <span class="aws-icon">☁️</span> AWS Prep
+            </div>
+            <nav>
+                <button class="nav-btn active" data-tab="quiz">Mock Exam</button>
+                <button class="nav-btn" data-tab="study">Study Mode</button>
+                <button class="nav-btn" data-tab="cheat-sheet">Cheat Sheet</button>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Loading State -->
+            <div id="loading" class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading Questions...</p>
+            </div>
+
+            <!-- Quiz Section -->
+            <section id="quiz" class="tab-content active">
+                <!-- Setup Screen -->
+                <div id="quiz-setup" class="quiz-view active-view">
+                    <h2>Configure Mock Exam</h2>
+                    <div class="setup-form">
+                        <div class="form-group">
+                            <label>Number of Questions</label>
+                            <div class="radio-group" id="q-count-options">
+                                <label><input type="radio" name="qCount" value="10"> 10</label>
+                                <label><input type="radio" name="qCount" value="30"> 30</label>
+                                <label><input type="radio" name="qCount" value="65" checked> 65 (Full Exam)</label>
+                                <label><input type="radio" name="qCount" value="all"> All</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Exam Mode</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="examMode" value="exam" checked> Exam Mode (Timed, No
+                                    instant feedback)</label>
+                                <label><input type="radio" name="examMode" value="practice"> Practice Mode (Instant
+                                    feedback)</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Topics to Include</label>
+                            <div class="topics-grid" id="setup-topics">
+                                <!-- Checkboxes injected here -->
+                            </div>
+                            <button id="select-all-topics" class="text-btn">Select / Deselect All</button>
+                        </div>
+                    </div>
+                    <button id="start-exam-btn" class="primary-btn large-btn">Start Mock Exam</button>
+                </div>
+
+                <!-- Active Quiz Screen -->
+                <div id="quiz-active" class="quiz-view">
+                    <div class="quiz-header">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="quiz-progress"></div>
+                        </div>
+                        <div class="stats">
+                            <span id="question-count">Question 1/0</span>
+                            <span id="timer-display" class="timer-badge">90:00</span>
+                        </div>
+                    </div>
+
+                    <div id="quiz-container" class="msg-container">
+                        <!-- Question injected here -->
+                    </div>
+
+                    <div class="quiz-controls">
+                        <button id="prev-btn" class="secondary-btn" disabled>Previous</button>
+                        <button id="reset-btn" class="danger-btn">Quit Exam</button>
+                        <button id="next-btn" class="primary-btn">Next</button>
+                    </div>
+                </div>
+
+                <!-- Results Screen -->
+                <div id="quiz-results" class="quiz-view">
+                    <div class="results-header">
+                        <h2 id="results-title">Exam Complete!</h2>
+                        <div class="score-circle">
+                            <span id="final-score-pct">0%</span>
+                        </div>
+                        <p id="final-score-text">You scored X out of Y</p>
+                        <div id="pass-fail-badge" class="result-badge">PASS</div>
+                    </div>
+
+                    <div class="results-actions">
+                        <button id="review-answers-btn" class="secondary-btn">Review Incorrect Answers</button>
+                        <button id="new-exam-btn" class="primary-btn">Start New Exam</button>
+                    </div>
+
+                    <div id="incorrect-review" class="review-section" style="display: none;">
+                        <h3>Topics to Review</h3>
+                        <div id="weak-topics" class="weak-topics-list"></div>
+
+                        <h3 style="margin-top: 2rem;">Incorrect Questions</h3>
+                        <div id="incorrect-list" class="study-list">
+                            <!-- Incorrect questions injected here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Study Section -->
+            <section id="study" class="tab-content">
+                <div class="filters">
+                    <input type="text" id="study-search" placeholder="Search questions...">
+                </div>
+                <div id="study-list" class="study-list">
+                    <!-- Questions list injected here -->
+                </div>
+                <!-- Pagination Controls -->
+                <div class="pagination-controls" id="study-pagination">
+                    <button id="study-prev" class="secondary-btn" disabled>Previous</button>
+                    <span id="study-page-info">Page 1 of 1</span>
+                    <button id="study-next" class="secondary-btn">Next</button>
+                </div>
+            </section>
+
+            <!-- Cheat Sheet Section -->
+            <section id="cheat-sheet" class="tab-content">
+                <div class="cs-header">
+                    <h2>Exam Key-Value Cues</h2>
+                    <div class="cs-controls">
+                        <input type="text" id="cs-search" placeholder="Search keywords...">
+                        <button id="download-pdf" class="action-btn">
+                            <span>📥</span> Download PDF
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="cheat-sheet-table">
+                        <thead>
+                            <tr>
+                                <th>Topic</th>
+                                <th>Key (Question Cue)</th>
+                                <th>Value (Correct Answer)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cs-body">
+                            <!-- Rows injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js?v=2.1"></script>
+</body>
+
+</html>
