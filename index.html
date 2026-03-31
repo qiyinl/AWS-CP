@@ -22,16 +22,17 @@
                 <button class="nav-btn active" data-tab="quiz">Mock Exam</button>
                 <button class="nav-btn" data-tab="study">Study Mode</button>
                 <button class="nav-btn" data-tab="cheat-sheet">Cheat Sheet</button>
+                <button class="nav-btn" data-tab="flashcards">Flashcards</button>
+                <button class="nav-btn" data-tab="study-table">Study Table</button>
+                <button class="nav-btn" data-tab="game">Game</button>
             </nav>
         </header>
-
         <main>
             <!-- Loading State -->
             <div id="loading" class="loading-state">
                 <div class="spinner"></div>
                 <p>Loading Questions...</p>
             </div>
-
             <!-- Quiz Section -->
             <section id="quiz" class="tab-content active">
                 <!-- Setup Screen -->
@@ -47,7 +48,6 @@
                                 <label><input type="radio" name="qCount" value="all"> All</label>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label>Exam Mode</label>
                             <div class="radio-group">
@@ -57,7 +57,6 @@
                                     feedback)</label>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label>Topics to Include</label>
                             <div class="topics-grid" id="setup-topics">
@@ -68,7 +67,6 @@
                     </div>
                     <button id="start-exam-btn" class="primary-btn large-btn">Start Mock Exam</button>
                 </div>
-
                 <!-- Active Quiz Screen -->
                 <div id="quiz-active" class="quiz-view">
                     <div class="quiz-header">
@@ -80,18 +78,15 @@
                             <span id="timer-display" class="timer-badge">90:00</span>
                         </div>
                     </div>
-
                     <div id="quiz-container" class="msg-container">
                         <!-- Question injected here -->
                     </div>
-
                     <div class="quiz-controls">
                         <button id="prev-btn" class="secondary-btn" disabled>Previous</button>
                         <button id="reset-btn" class="danger-btn">Quit Exam</button>
                         <button id="next-btn" class="primary-btn">Next</button>
                     </div>
                 </div>
-
                 <!-- Results Screen -->
                 <div id="quiz-results" class="quiz-view">
                     <div class="results-header">
@@ -102,16 +97,13 @@
                         <p id="final-score-text">You scored X out of Y</p>
                         <div id="pass-fail-badge" class="result-badge">PASS</div>
                     </div>
-
                     <div class="results-actions">
                         <button id="review-answers-btn" class="secondary-btn">Review Incorrect Answers</button>
                         <button id="new-exam-btn" class="primary-btn">Start New Exam</button>
                     </div>
-
                     <div id="incorrect-review" class="review-section" style="display: none;">
                         <h3>Topics to Review</h3>
                         <div id="weak-topics" class="weak-topics-list"></div>
-
                         <h3 style="margin-top: 2rem;">Incorrect Questions</h3>
                         <div id="incorrect-list" class="study-list">
                             <!-- Incorrect questions injected here -->
@@ -119,7 +111,6 @@
                     </div>
                 </div>
             </section>
-
             <!-- Study Section -->
             <section id="study" class="tab-content">
                 <div class="filters">
@@ -135,7 +126,6 @@
                     <button id="study-next" class="secondary-btn">Next</button>
                 </div>
             </section>
-
             <!-- Cheat Sheet Section -->
             <section id="cheat-sheet" class="tab-content">
                 <div class="cs-header">
@@ -143,8 +133,7 @@
                     <div class="cs-controls">
                         <input type="text" id="cs-search" placeholder="Search keywords...">
                         <button id="download-pdf" class="action-btn">
-                            <span>📥</span> Download PDF
-                        </button>
+                            <span>📥</span> Download PDF </button>
                     </div>
                 </div>
                 <div class="table-container">
@@ -162,8 +151,148 @@
                     </table>
                 </div>
             </section>
+            <!-- Flashcards Section -->
+            <section id="flashcards" class="tab-content">
+                <div class="flashcards-header">
+                    <h2>Interactive Flashcards</h2>
+                    <p>Click on the card to see the answer</p>
+                </div>
+                <div id="flashcards-unit-selector">
+                    <!-- Buttons generated by JS -->
+                </div>
+                <div class="flashcard-container">
+                    <div id="flashcard">
+                        <div class="flashcard-face flashcard-front">
+                            <div id="flashcard-keyword"></div>
+                            <div id="flashcard-hint"></div>
+                            <div class="click-hint">👆 Click to see the answer</div>
+                        </div>
+                        <div class="flashcard-face flashcard-back">
+                            <div id="flashcard-service"></div>
+                            <div id="flashcard-description"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flashcard-controls">
+                    <button id="flashcard-know" class="primary-btn">✓ I Know This</button>
+                    <button id="flashcard-learning" class="primary-btn">📚 Still Learning</button>
+                    <button id="flashcard-next" class="secondary-btn">→ Next</button>
+                </div>
+                <div class="flashcard-stats">
+                    <div class="flashcard-stats-header">Card <span id="flashcard-current">1</span> of <span
+                            id="flashcard-total">0</span></div>
+                    <div class="flashcard-progress-bar">
+                        <div id="flashcard-progress"></div>
+                    </div>
+                    <div class="flashcard-stats-grid">
+                        <div class="flashcard-stat-box">
+                            <div id="flashcard-known" class="flashcard-stat-number">0</div>
+                            <div class="flashcard-stat-label">Known</div>
+                        </div>
+                        <div class="flashcard-stat-box">
+                            <div id="flashcard-learning-count" class="flashcard-stat-number">0</div>
+                            <div class="flashcard-stat-label">Learning</div>
+                        </div>
+                        <div class="flashcard-stat-box">
+                            <div id="flashcard-remaining" class="flashcard-stat-number">0</div>
+                            <div class="flashcard-stat-label">Remaining</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Study Table Section -->
+            <section id="study-table" class="tab-content">
+                <div class="study-table-header">
+                    <h2>Complete Study Reference</h2>
+                    <p>Search and filter AWS services</p>
+                </div>
+                <div class="study-table-controls">
+                    <input type="text" id="table-search" placeholder="🔍 Search by keyword, service or description...">
+                    <div id="table-filters">
+                        <!-- Filter buttons generated by JS -->
+                    </div>
+                    <div class="study-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Unit</th>
+                                    <th>Keyword</th>
+                                    <th>AWS Service</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <!-- Rows generated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <!-- Game Section -->
+            <section id="game" class="tab-content">
+                <div id="game-setup" class="game-header">
+                    <h2>Keyword Match Game</h2>
+                    <p>Which AWS service would you use in each situation?</p>
+                    <h3>Choose a unit to start</h3>
+                    <div id="game-unit-selection">
+                        <!-- Unit cards generated by JS -->
+                    </div>
+                    <button id="game-start" class="primary-btn large-btn">Start Game</button>
+                </div>
+                <div id="game-active" style="display: none;">
+                    <div class="game-stats">
+                        <div class="game-stats-inner">
+                            <div>
+                                <div id="game-question-num" class="game-stat-number">1</div>
+                                <div class="game-stat-label">Question</div>
+                            </div>
+                            <div>
+                                <div id="game-score" class="game-stat-number">0</div>
+                                <div class="game-stat-label">Points</div>
+                            </div>
+                            <div>
+                                <div id="game-streak" class="game-stat-number">0</div>
+                                <div class="game-stat-label">🔥 Streak</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-question-card">
+                        <div id="game-scenario"></div>
+                        <div id="game-options">
+                            <!-- Options generated by JS -->
+                        </div>
+                        <div id="game-feedback"></div>
+                        <button id="game-next" class="primary-btn">→ Next</button>
+                    </div>
+                </div>
+                <div id="game-results" class="game-results" style="display: none;">
+                    <h2>Game Complete!</h2>
+                    <div class="game-score-circle">
+                        <div id="game-final-score">0%</div>
+                    </div>
+                    <div class="game-results-grid">
+                        <div class="game-result-box game-result-correct">
+                            <div id="game-correct" class="game-result-number">0</div>
+                            <div>✓ Correct</div>
+                        </div>
+                        <div class="game-result-box game-result-incorrect">
+                            <div id="game-incorrect" class="game-result-number">0</div>
+                            <div>✗ Incorrect</div>
+                        </div>
+                        <div class="game-result-box game-result-accuracy">
+                            <div id="game-accuracy" class="game-result-number">0%</div>
+                            <div>Accuracy</div>
+                        </div>
+                    </div>
+                    <div class="game-results-buttons">
+                        <button id="game-restart" class="secondary-btn">Same Unit</button>
+                        <button id="game-new" class="primary-btn">New Unit</button>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
+    <script src="flashcards-data.js"></script>
     <script src="script.js?v=2.1"></script>
 </body>
 
