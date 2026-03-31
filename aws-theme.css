@@ -1,0 +1,67 @@
+:root {
+  --aws-orange: #ff9900;
+  --aws-blue: #232f3e;
+  --aws-light-blue: #3e5164;
+  --bg-color: #f2f3f3;
+  --card-bg: #ffffff;
+  --text-primary: #16191f;
+  --text-secondary: #545b64;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-color);
+  min-height: 100vh;
+}
+
+.top-header {
+  background-color: var(--aws-blue);
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.logo {
+  color: white;
+  font-weight: 700;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.back-link {
+  background: transparent;
+  border: 2px solid var(--aws-orange);
+  color: var(--aws-orange);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.back-link:hover {
+  background: var(--aws-orange);
+  color: var(--aws-blue);
+}
+
+@media (max-width: 768px) {
+  .top-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .logo {
+    font-size: 1.1rem;
+  }
+}
