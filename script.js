@@ -927,6 +927,18 @@ function updateFlashcardContent(card) {
   const progress =
     ((flashcardsState.currentIndex + 1) / flashcardsState.cards.length) * 100
   document.getElementById('flashcard-progress').style.width = `${progress}%`
+
+  // Update button states
+  const backBtn = document.getElementById('flashcard-back')
+  const nextBtn = document.getElementById('flashcard-next')
+
+  if (backBtn) {
+    backBtn.disabled = flashcardsState.currentIndex === 0
+  }
+
+  if (nextBtn) {
+    nextBtn.disabled = flashcardsState.currentIndex === flashcardsState.cards.length - 1
+  }
 }
 
 function updateFlashcardsStats() {
@@ -947,6 +959,26 @@ function updateFlashcardsStats() {
 function nextFlashcard() {
   flashcardsState.currentIndex =
     (flashcardsState.currentIndex + 1) % flashcardsState.cards.length
+  showFlashcard()
+}
+
+function previousFlashcard() {
+  flashcardsState.currentIndex =
+    (flashcardsState.currentIndex - 1 + flashcardsState.cards.length) %
+    flashcardsState.cards.length
+  showFlashcard()
+}
+
+function shuffleFlashcards() {
+  // Fisher-Yates shuffle algorithm
+  for (let i = flashcardsState.cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[flashcardsState.cards[i], flashcardsState.cards[j]] = [
+      flashcardsState.cards[j],
+      flashcardsState.cards[i],
+    ]
+  }
+  flashcardsState.currentIndex = 0
   showFlashcard()
 }
 
@@ -985,6 +1017,9 @@ function setupFlashcardsListeners() {
     })
   }
 
+  const backBtn = document.getElementById('flashcard-back')
+  if (backBtn) backBtn.addEventListener('click', previousFlashcard)
+
   const knowBtn = document.getElementById('flashcard-know')
   if (knowBtn) knowBtn.addEventListener('click', () => markFlashcard('known'))
 
@@ -994,6 +1029,9 @@ function setupFlashcardsListeners() {
 
   const nextBtn = document.getElementById('flashcard-next')
   if (nextBtn) nextBtn.addEventListener('click', nextFlashcard)
+
+  const shuffleBtn = document.getElementById('flashcard-shuffle')
+  if (shuffleBtn) shuffleBtn.addEventListener('click', shuffleFlashcards)
 
   const unitSelector = document.getElementById('flashcards-unit-selector')
   if (unitSelector) {

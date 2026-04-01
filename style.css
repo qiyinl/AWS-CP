@@ -842,9 +842,34 @@ tr:hover td {
 
 .flashcard-controls {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.flashcard-shuffle-controls {
+  display: flex;
+  justify-content: center;
   margin-bottom: 2rem;
+}
+
+#flashcard-shuffle {
+  background: #8b5cf6;
+  color: white;
+  padding: 15px 30px;
+}
+
+#flashcard-shuffle:hover {
+  background: #7c3aed;
+}
+
+.flashcard-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.flashcard-controls button:disabled:hover {
+  transform: none;
 }
 
 #flashcard-know {
@@ -1134,7 +1159,12 @@ tr:hover td {
   }
 
   .flashcard-controls {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #flashcard-shuffle {
+    padding: 15px 20px;
+    font-size: 0.9rem;
   }
 
   #game-options {
