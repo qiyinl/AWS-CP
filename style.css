@@ -404,7 +404,7 @@ button {
   background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 table {
