@@ -8,6 +8,24 @@ function shuffleArray(array) {
   return shuffled
 }
 
+// Shuffle a question's options while remapping the correct-answer indices
+function shuffleQuestionOptions(q) {
+  const pairs = q.options.map((opt, idx) => ({
+    text: opt,
+    isCorrect: q.answerIndices.includes(idx),
+  }))
+  const shuffled = shuffleArray(pairs)
+  const answerIndices = []
+  shuffled.forEach((p, idx) => {
+    if (p.isCorrect) answerIndices.push(idx)
+  })
+  return {
+    ...q,
+    options: shuffled.map((p) => p.text),
+    answerIndices,
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // State
   const state = {
@@ -326,13 +344,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let pool = state.allQuestions.filter((q) =>
       selectedTopics.includes(q.topic),
     )
-    shuffleArray(pool)
+    pool = shuffleArray(pool)
 
     const count =
       qCountVal === 'all'
         ? pool.length
         : Math.min(parseInt(qCountVal), pool.length)
-    state.quizQuestions = pool.slice(0, count)
+    state.quizQuestions = pool.slice(0, count).map(shuffleQuestionOptions)
 
     if (state.quizQuestions.length === 0) {
       alert('No questions found for the selected criteria.')
