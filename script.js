@@ -8,6 +8,34 @@ function shuffleArray(array) {
   return shuffled
 }
 
+// Sample a mix of single- and multi-answer questions that matches the real AWS
+// exam blueprint (~30% multi-answer). Returns at most `count` items from `pool`.
+// If either bucket runs short, the deficit is filled from the other bucket.
+function sampleWithMultiAnswerRatio(pool, count, multiRatio = 0.3) {
+  const multi = pool.filter((q) => (q.answerIndices || []).length > 1)
+  const single = pool.filter((q) => (q.answerIndices || []).length <= 1)
+  const shuffledMulti = shuffleArray(multi)
+  const shuffledSingle = shuffleArray(single)
+
+  const targetMulti = Math.min(shuffledMulti.length, Math.round(count * multiRatio))
+  const targetSingle = Math.min(shuffledSingle.length, count - targetMulti)
+  // If multi bucket was short, top up from single; if single was short, top up from multi
+  let pickedMulti = shuffledMulti.slice(0, targetMulti)
+  let pickedSingle = shuffledSingle.slice(0, targetSingle)
+  const deficit = count - pickedMulti.length - pickedSingle.length
+  if (deficit > 0) {
+    const extraSingle = shuffledSingle.slice(pickedSingle.length, pickedSingle.length + deficit)
+    pickedSingle = pickedSingle.concat(extraSingle)
+    const stillShort = count - pickedMulti.length - pickedSingle.length
+    if (stillShort > 0) {
+      pickedMulti = pickedMulti.concat(
+        shuffledMulti.slice(pickedMulti.length, pickedMulti.length + stillShort),
+      )
+    }
+  }
+  return shuffleArray(pickedMulti.concat(pickedSingle))
+}
+
 // Shuffle a question's options while remapping the correct-answer indices
 function shuffleQuestionOptions(q) {
   const pairs = q.options.map((opt, idx) => ({
@@ -340,17 +368,22 @@ document.addEventListener('DOMContentLoaded', () => {
       return
     }
 
-    // Filter and shuffle
-    let pool = state.allQuestions.filter((q) =>
+    // Filter pool by selected topics
+    const pool = state.allQuestions.filter((q) =>
       selectedTopics.includes(q.topic),
     )
-    pool = shuffleArray(pool)
 
     const count =
       qCountVal === 'all'
         ? pool.length
         : Math.min(parseInt(qCountVal), pool.length)
-    state.quizQuestions = pool.slice(0, count).map(shuffleQuestionOptions)
+    // Match the real AWS exam blueprint: ~30% multi-answer questions.
+    // For "All" we keep the whole pool (no sub-sampling), just shuffled.
+    const selected =
+      qCountVal === 'all'
+        ? shuffleArray(pool)
+        : sampleWithMultiAnswerRatio(pool, count, 0.3)
+    state.quizQuestions = selected.map(shuffleQuestionOptions)
 
     if (state.quizQuestions.length === 0) {
       alert('No questions found for the selected criteria.')

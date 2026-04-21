@@ -810,7 +810,7 @@
     "options": [
       "Invest heavily in architecting your environment, as it is not easy to change your design later.",
       "Use AWS reservations to reduce costs when testing your production environment.",
-      "Automate wherever possible to make architectural (© ) experimentation easier.",
+      "Automate wherever possible to make architectural (\u00a9 ) experimentation easier.",
       "Provision a large compute capacity to handle any spikes in load"
     ],
     "answerIndices": [
@@ -5237,7 +5237,7 @@
       "It is a data center designed to be completely isolated from other data centers in the same region.",
       "It is a collection of data centers distributed in multiple countries.",
       "It is a logically isolated network of the AWS Cloud.",
-      "It is a distinct location within a region that is insulated from « failures in other Availability Zones."
+      "It is a distinct location within a region that is insulated from \u00ab failures in other Availability Zones."
     ],
     "answerIndices": [
       3
@@ -5312,15 +5312,15 @@
     "topic": "Compute"
   },
   {
-    "text": "Which of the following steps should be taken by a customer when conducting penetration testing on AWS?",
+    "text": "Which of the following steps should be taken by a customer when conducting penetration testing on AWS against one of the permitted services (for example, EC2, RDS, or Lambda)?",
     "options": [
-      "Conduct penetration testing using Amazon Inspector, and then notify AWS support.",
-      "Request and wait for approval from the customer's internal security team, and then conduct testing.",
-      "Notify AWS support, and then conduct testing immediately.",
-      "Request and wait for approval from AWS support, and then conduct testing."
+      "Request and wait for approval from AWS Support before starting the test.",
+      "Perform the test without prior authorization from AWS, following the AWS Customer Support Policy for Penetration Testing.",
+      "Notify AWS Support and begin the test immediately without waiting for a response.",
+      "Penetration testing is not allowed against any AWS service."
     ],
     "answerIndices": [
-      3
+      1
     ],
     "topic": "Security"
   },
@@ -7694,21 +7694,6 @@
     "topic": "Compute"
   },
   {
-    "text": "Which of the following security-related services does AWS offer? (Select TWO)",
-    "options": [
-      "Multi-factor authentication physical tokens.",
-      "AWS Trusted Advisor security checks.",
-      "Data encryption.",
-      "Automated penetration testing.",
-      "Amazon S3 copyrighted content detection."
-    ],
-    "answerIndices": [
-      1,
-      2
-    ],
-    "topic": "Storage"
-  },
-  {
     "text": "Which of the following services have Distributed Denial of Service (DDoS) mitigation features? (Select TWO)",
     "options": [
       "AWS WAF.",
@@ -8016,20 +8001,6 @@
       2
     ],
     "topic": "Cloud Concepts"
-  },
-  {
-    "text": "Your customer wants to grant restricted proxy rights to their HR Department to act on behalf of employees belonging to their legal entity. How can you perform this requirement? There are 2 correct answers to this question.",
-    "options": [
-      "Use the Manage Permission Roles tool to grant proxy rights to the HR Department.",
-      "Fill the PROXY column of the Basic Import template to match the requirements and import the file using the Import Employee Data tool.",
-      "Use the Proxy Management tool to configure the requested proxy assignments.",
-      "Fill the Basic Import template with the requested proxy configuration and import the file using the Import and Export Data tool."
-    ],
-    "answerIndices": [
-      1,
-      2
-    ],
-    "topic": "Management"
   },
   {
     "text": "Which two statements about configuring a traffic monitoring session are true? (Choose two)",
