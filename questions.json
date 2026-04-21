@@ -5312,19 +5312,6 @@
     "topic": "Compute"
   },
   {
-    "text": "Which of the following steps should be taken by a customer when conducting penetration testing on AWS against one of the permitted services (for example, EC2, RDS, or Lambda)?",
-    "options": [
-      "Request and wait for approval from AWS Support before starting the test.",
-      "Perform the test without prior authorization from AWS, following the AWS Customer Support Policy for Penetration Testing.",
-      "Notify AWS Support and begin the test immediately without waiting for a response.",
-      "Penetration testing is not allowed against any AWS service."
-    ],
-    "answerIndices": [
-      1
-    ],
-    "topic": "Security"
-  },
-  {
     "text": "Which AWS Cost Management tool allows you to view the most granular data about your AWS bill?",
     "options": [
       "AWS Cost Explorer.",
