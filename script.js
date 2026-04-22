@@ -425,11 +425,11 @@ document.addEventListener('DOMContentLoaded', () => {
       elements.timerDisplay.style.display = 'none'
     }
 
-    // Switch to Quiz tab and show the active quiz view
+    // Show the quiz-active DOM but keep "Practice Exams" highlighted in the nav
     elements.tabContents.forEach((t) => t.classList.remove('active'))
     elements.navBtns.forEach((n) => n.classList.remove('active'))
     elements.quizSection.classList.add('active')
-    elements.quizNavBtn.classList.add('active')
+    elements.practiceExamsNavBtn.classList.add('active')
 
     elements.quizSetup.classList.remove('active-view')
     elements.quizResults.classList.remove('active-view')
