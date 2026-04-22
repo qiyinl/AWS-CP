@@ -654,6 +654,51 @@ tr:hover td {
   margin-bottom: 0.5rem;
 }
 
+.practice-exams-header {
+  margin-bottom: 1.5rem;
+}
+
+.practice-exams-intro {
+  color: var(--text-secondary);
+  margin: 0.5rem 0 1.25rem;
+}
+
+.practice-exams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.practice-exam-card {
+  background: var(--card-bg);
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+  padding: 1rem 0.75rem;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  font-family: inherit;
+  color: var(--text-primary);
+}
+
+.practice-exam-card:hover {
+  border-color: var(--aws-orange);
+  transform: translateY(-2px);
+}
+
+.practice-exam-card-number {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--aws-blue);
+}
+
+.practice-exam-card-meta {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
 .topics-grid label {
   font-weight: normal;
   font-size: 0.9rem;

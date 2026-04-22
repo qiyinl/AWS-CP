@@ -20,6 +20,7 @@
             </div>
             <nav>
                 <button class="nav-btn active" data-tab="quiz">Mock Exam</button>
+                <button class="nav-btn" data-tab="practice-exams">Practice Exams</button>
                 <button class="nav-btn" data-tab="study">Study Mode</button>
                 <button class="nav-btn" data-tab="cheat-sheet">Cheat Sheet</button>
                 <button class="nav-btn" data-tab="flashcards">Flashcards</button>
@@ -109,6 +110,23 @@
                             <!-- Incorrect questions injected here -->
                         </div>
                     </div>
+                </div>
+            </section>
+            <!-- Practice Exams Section -->
+            <section id="practice-exams" class="tab-content">
+                <div class="practice-exams-header">
+                    <h2>Practice Exams</h2>
+                    <p class="practice-exams-intro">Pick an exam to start. Questions follow their original order. Pick a mode below, then click an exam.</p>
+                    <div class="form-group">
+                        <label>Exam Mode</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="practiceExamMode" value="practice" checked> Practice Mode (Instant feedback)</label>
+                            <label><input type="radio" name="practiceExamMode" value="exam"> Exam Mode (Timed, No instant feedback)</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="practice-exams-grid" class="practice-exams-grid">
+                    <!-- Exam cards injected here -->
                 </div>
             </section>
             <!-- Study Section -->
@@ -297,7 +315,8 @@
         </main>
     </div>
     <script src="flashcards-data.js"></script>
-    <script src="script.js?v=2.2"></script>
+    <script src="practice-exams.js?v=1.0"></script>
+    <script src="script.js?v=2.3"></script>
 </body>
 
 </html>

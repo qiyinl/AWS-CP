@@ -67,6 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
     timeRemaining: 0,
     studyPage: 1,
     itemsPerPage: 10,
+    // Track whether the active exam came from the Practice Exams tab,
+    // so Quit/New Exam buttons return there instead of the mock-exam setup.
+    examSource: 'mock', // 'mock' | 'practice'
+    currentPracticeExamNumber: null,
   }
 
   // DOM Elements
@@ -110,6 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
     csBody: document.getElementById('cs-body'),
     csSearch: document.getElementById('cs-search'),
     downloadPdfBtn: document.getElementById('download-pdf'),
+
+    practiceExamsGrid: document.getElementById('practice-exams-grid'),
+    practiceExamsSection: document.getElementById('practice-exams'),
+    quizSection: document.getElementById('quiz'),
+    quizNavBtn: document.querySelector('.nav-btn[data-tab="quiz"]'),
+    practiceExamsNavBtn: document.querySelector('.nav-btn[data-tab="practice-exams"]'),
   }
 
   // Initialization
@@ -133,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
       renderSetupTopics()
       renderStudyMode()
       renderCheatSheet()
+      renderPracticeExamsGrid()
       setupEventListeners()
     } catch (error) {
       console.error('Initialization failed:', error)
@@ -350,6 +361,100 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.setupTopics.innerHTML = html
   }
 
+  function renderPracticeExamsGrid() {
+    if (!window.practiceExams || !elements.practiceExamsGrid) return
+    const cards = window.practiceExams
+      .map(
+        (ex) => `
+          <button class="practice-exam-card" data-exam-number="${ex.number}">
+            <div class="practice-exam-card-number">Exam ${ex.number}</div>
+            <div class="practice-exam-card-meta">${ex.questions.length} questions</div>
+          </button>`,
+      )
+      .join('')
+    elements.practiceExamsGrid.innerHTML = cards
+
+    elements.practiceExamsGrid
+      .querySelectorAll('.practice-exam-card')
+      .forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const n = parseInt(btn.dataset.examNumber, 10)
+          startPracticeExam(n)
+        })
+      })
+  }
+
+  function startPracticeExam(examNumber) {
+    const exam = (window.practiceExams || []).find((e) => e.number === examNumber)
+    if (!exam || exam.questions.length === 0) {
+      alert('Exam not available.')
+      return
+    }
+
+    state.examMode = document.querySelector(
+      'input[name="practiceExamMode"]:checked',
+    ).value
+    state.examSource = 'practice'
+    state.currentPracticeExamNumber = examNumber
+
+    // Keep original question order — assign a pseudo-topic so existing UI still works
+    state.quizQuestions = exam.questions.map((q) => ({
+      ...q,
+      topic: q.topic || `Practice Exam ${examNumber}`,
+    }))
+
+    state.currentQuestionIndex = 0
+    state.score = 0
+    state.userAnswers = {}
+
+    // Timer only if Exam Mode chosen
+    if (state.timerInterval) clearInterval(state.timerInterval)
+    if (state.examMode === 'exam') {
+      state.timeRemaining = Math.ceil(state.quizQuestions.length * 1.38 * 60)
+      elements.timerDisplay.style.display = 'inline-block'
+      updateTimerDisplay()
+      state.timerInterval = setInterval(() => {
+        state.timeRemaining--
+        updateTimerDisplay()
+        if (state.timeRemaining <= 0) {
+          clearInterval(state.timerInterval)
+          finishExam(true)
+        }
+      }, 1000)
+    } else {
+      elements.timerDisplay.style.display = 'none'
+    }
+
+    // Switch to Quiz tab and show the active quiz view
+    elements.tabContents.forEach((t) => t.classList.remove('active'))
+    elements.navBtns.forEach((n) => n.classList.remove('active'))
+    elements.quizSection.classList.add('active')
+    elements.quizNavBtn.classList.add('active')
+
+    elements.quizSetup.classList.remove('active-view')
+    elements.quizResults.classList.remove('active-view')
+    elements.quizActive.classList.add('active-view')
+
+    // Update New Exam button label to reflect where we'll return
+    elements.newExamBtn.textContent = 'Back to Practice Exams'
+
+    renderQuiz()
+  }
+
+  function returnFromPracticeExam() {
+    if (state.timerInterval) clearInterval(state.timerInterval)
+    elements.quizActive.classList.remove('active-view')
+    elements.quizResults.classList.remove('active-view')
+    elements.quizSetup.classList.add('active-view')
+    elements.tabContents.forEach((t) => t.classList.remove('active'))
+    elements.navBtns.forEach((n) => n.classList.remove('active'))
+    elements.practiceExamsSection.classList.add('active')
+    elements.practiceExamsNavBtn.classList.add('active')
+    state.examSource = 'mock'
+    state.currentPracticeExamNumber = null
+    elements.newExamBtn.textContent = 'Start New Exam'
+  }
+
   function startMockExam() {
     // Gather settings
     const qCountVal = document.querySelector(
@@ -358,6 +463,8 @@ document.addEventListener('DOMContentLoaded', () => {
     state.examMode = document.querySelector(
       'input[name="examMode"]:checked',
     ).value
+    state.examSource = 'mock'
+    elements.newExamBtn.textContent = 'Start New Exam'
 
     const selectedTopics = Array.from(
       document.querySelectorAll('input[name="topicFilters"]:checked'),
@@ -769,6 +876,10 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.startExamBtn.addEventListener('click', startMockExam)
 
     elements.newExamBtn.addEventListener('click', () => {
+      if (state.examSource === 'practice') {
+        returnFromPracticeExam()
+        return
+      }
       elements.quizResults.classList.remove('active-view')
       elements.quizSetup.classList.add('active-view')
     })
@@ -799,6 +910,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     elements.resetBtn.addEventListener('click', () => {
       if (confirm('Are you sure you want to quit the exam?')) {
+        if (state.examSource === 'practice') {
+          returnFromPracticeExam()
+          return
+        }
         if (state.timerInterval) clearInterval(state.timerInterval)
         elements.quizActive.classList.remove('active-view')
         elements.quizSetup.classList.add('active-view')
